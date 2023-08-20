@@ -8,3 +8,17 @@ type GetTestByIdInput struct {
 type GetTestByIdOutput struct {
 	Name string
 }
+
+type RegistrationRequest struct {
+	PhoneNumber string `json:"phone_number"`
+	FullName    string `json:"full_name"`
+	Password    string `json:"password"`
+}
+
+type Users struct {
+	ID           int    `json:"id"`
+	FullName     string `json:"full_name"`
+	Password     string `json:"password"`
+	PhoneNumber  string `json:"phone_number"`
+	LoginCounter int    `json:"login_counter"`
+}

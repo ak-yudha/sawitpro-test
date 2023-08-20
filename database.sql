@@ -8,10 +8,13 @@
   */
 
 /** This is test table. Remove this table and replace with your own tables. */
-CREATE TABLE test (
-	id serial PRIMARY KEY,
-	name VARCHAR ( 50 ) UNIQUE NOT NULL,
+CREATE TABLE users (
+                       id            serial primary key,
+                       full_name     varchar(200)      not null,
+                       phone_number  varchar(200)      not null unique,
+                       password      varchar(200)      not null,
+                       counter integer default 0 not null
 );
 
-INSERT INTO test (name) VALUES ('test1');
-INSERT INTO test (name) VALUES ('test2');
+INSERT INTO users (full_name, phone_number, password, login_counter) VALUES ('1', '+628561119023', '111', 1);
+INSERT INTO users (full_name, phone_number, password, login_counter) VALUES ('2', '+625693213213', '222', 0);

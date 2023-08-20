@@ -31,11 +31,140 @@ paths:
         '200':
           description: Test return
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/HelloResponse"
         '404':
           description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /registration:
+    post:
+      summary: Add New User Registration
+      operationId: registration
+      requestBody:
+        description: Add a New User
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Registration created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrationResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /profile:
+    get:
+      summary: Endpoint Get Profile Base on Token Login
+      operationId: Profile
+      responses:
+        '200':
+          description: Successful Login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '403':
+          description: Access Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      summary: Endpoint Update Profile
+      operationId: Update Profile
+      requestBody:
+        description: Login
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileRequest'
+      responses:
+        '200':
+          description: Successful Login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileUpdateResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '403':
+          description: Access Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /login:
+    post:
+      summary: Endpoint User Login
+      operationId: login
+      requestBody:
+        description: Login
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        '400':
+          description: Invalid Input
           content:
             application/json:
               schema:
@@ -56,3 +185,77 @@ components:
       properties:
         message:
           type: string
+    RegistrationRequest:
+      required:
+        - phone_number
+        - full_name
+        - password
+      type: object
+      properties:
+        phone_number:
+          $ref: '#/components/schemas/PhoneNumber'
+        full_name:
+          $ref: '#/components/schemas/FullName'
+        password:
+          $ref: '#/components/schemas/Password'
+    RegistrationResponse:
+      type: object
+      properties:
+        user_id:
+          type: integer
+    LoginRequest:
+      required:
+        - phone_number
+        - password
+      type: object
+      properties:
+        phone_number:
+          $ref: '#/components/schemas/PhoneNumber'
+        password:
+          $ref: '#/components/schemas/Password'
+    LoginResponse:
+      type: object
+      required:
+        - id
+        - token
+      properties:
+        id:
+          type: integer
+        token:
+          type: string
+    ProfileResponse:
+      properties:
+        full_name:
+          $ref: '#/components/schemas/FullName'
+        phone_number:
+          $ref: '#/components/schemas/PhoneNumber'
+    ProfileRequest:
+      properties:
+        phone_number:
+          $ref: '#/components/schemas/PhoneNumber'
+        full_name:
+          $ref: '#/components/schemas/FullName'
+    ProfileUpdateResponse:
+      properties:
+        Token:
+          type: string
+    PhoneNumber:
+      type: string
+      minimum: 10
+      maximum: 13
+      pattern: '^(\+62)(\d{8,11})$'
+      x-oapi-codegen-extra-tags:
+        validate: required,custom_prefix=+62,min=11,max=14
+    Password:
+      type: string
+      minimum: 6
+      maximum: 64
+      pattern: '^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,64}$'
+      x-oapi-codegen-extra-tags:
+        validate: required,custom_password
+    FullName:
+      type: string
+      minimum: 3
+      maximum: 60
+      x-oapi-codegen-extra-tags:
+        validate: required,min=3,max=60

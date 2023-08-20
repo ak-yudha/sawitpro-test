@@ -1,11 +1,10 @@
 package main
 
 import (
-	"os"
-
 	"github.com/SawitProRecruitment/UserService/generated"
 	"github.com/SawitProRecruitment/UserService/handler"
 	"github.com/SawitProRecruitment/UserService/repository"
+	"os"
 
 	"github.com/labstack/echo/v4"
 )
